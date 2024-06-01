@@ -1,0 +1,112 @@
+<ContentPage x:Class="FloraSense.Pages.PlantTypesPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:FloraSense.Entities.PlantTypes;assembly=FloraSense.Entities"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewModels="clr-namespace:FloraSense.ViewModels.PageViewModels"
+             Title="PlantTypePage"
+             x:DataType="viewModels:PlantTypeViewModel">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior Command="{Binding Loaded}"
+                                        EventName="Appearing" />
+    </ContentPage.Behaviors>
+
+    <StackLayout>
+        <StackLayout IsVisible="{Binding IsCurrentEntitySet}">
+            <Label FontAttributes="Bold"
+                   FontSize="Large"
+                   Text="Plant Type Details" />
+
+            <StackLayout>
+                <Label Text="Type Name:" />
+                <Entry Text="{Binding CurrentEntity.TypeName}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Description:" />
+                <Entry Text="{Binding CurrentEntity.Description}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Optimal Humidity:" />
+                <Entry Text="{Binding CurrentEntity.OptimalHumidity}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Optimal Temperature:" />
+                <Entry Text="{Binding CurrentEntity.OptimalTemperature}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Optimal Light:" />
+                <Entry Text="{Binding CurrentEntity.OptimalLight}" />
+            </StackLayout>
+
+            <Button Command="{Binding Update}"
+                    Text="Update" />
+            <Button Command="{Binding BackToList}"
+                    Text="Back to list" />
+        </StackLayout>
+
+        <StackLayout IsVisible="{Binding IsCreating}">
+            <Label FontAttributes="Bold"
+                   FontSize="Large"
+                   Text="Plant Type Details" />
+
+            <StackLayout>
+                <Label Text="Type Name:" />
+                <Entry Text="{Binding NewEntity.TypeName}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Description:" />
+                <Entry Text="{Binding NewEntity.Description}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Optimal Humidity:" />
+                <Entry Text="{Binding NewEntity.OptimalHumidity}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Optimal Temperature:" />
+                <Entry Text="{Binding NewEntity.OptimalTemperature}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Optimal Light:" />
+                <Entry Text="{Binding NewEntity.OptimalLight}" />
+            </StackLayout>
+
+            <Button Command="{Binding Create}"
+                    Text="Create" />
+            <Button Command="{Binding BackToList}"
+                    Text="Back to list" />
+        </StackLayout>
+
+        <StackLayout IsVisible="{Binding IsCurrentEntityNotSet}">
+            <Label>Plant Types:</Label>
+            <ListView ItemsSource="{Binding Entities}"
+                      SelectionMode="Single">
+                <ListView.Behaviors>
+                    <toolkit:EventToCommandBehavior Command="{Binding GetEntity}"
+                                                    x:TypeArguments="SelectedItemChangedEventArgs"
+                                                    EventName="ItemSelected" />
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:PlantTypeModel">
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="Type Name:" />
+                                <Label Text="{Binding TypeName}" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Command="{Binding ToCreate}"
+                    Text="Create" />
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

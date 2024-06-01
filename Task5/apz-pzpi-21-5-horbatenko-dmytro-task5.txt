@@ -1,0 +1,316 @@
+РОЗРОБКА MOBILE ЧАСТИНИ ПРОГРАМНОЇ СИСТЕМИ
+
+Мета роботи:
+покращити навички проектування програмних систем. Розробити  mobile частину програмної системи та описати її з допомогою демонстраційного відео, UML Use Case diagram, UML Package diagram, UML Component Diagram, UML State Diagram.
+
+Тема проєкту:
+Програмна система для моніторингу та управлінням мікроклімату для домашніх рослин 
+
+1   АРХІТЕКТУРА ТА ІНЖЕНЕРНІ РІШЕННЯ
+
+Мобільна частина реалізована з використанням MAUI, що дозволяє створювати застосунки для більшості популярних платформ без необхідності написання окремого коду для кожної з них. Для розробки використовувався шаблон MVVM, який розділяє відображення (View), бізнес-логіку (Model) та посередник між ними (ViewModel). Це сприяє модульності та зручності в управлінні інтерфейсом користувача. Проте, ViewModel було написано з нуля, оскільки інші UI частини системи використовують різні технології.
+
+1.1	Шар мобільного застосунку
+
+Цей шар використовує фреймворк MAUI для написання коду, який у подальшому компілюється у код, специфічний для конкретної платформи. Шар складається з View, написаних за допомогою мови розмітки XAML, та ViewModel, які реалізують шаблон "Producer-Consumer" з використанням інтерфейсу INotifyPropertyChanged та бібліотеки CommunityToolkit, що полегшує роботу з цим інтерфейсом. Цей шар взаємодіє з шаром зв'язку з API, забезпечуючи доступ до даних і функціональності системи.
+
+1.2	Шар зв'язку з API
+
+Цей шар відповідає за реалізацію методів для з'єднання з API, включаючи методи для створення моделей, авторизації та інших операцій. Він використовує конфігуровані сутності, що створюються за допомогою ServiceProvider.
+
+1.3	Локалізація
+
+Локалізація здійснюється за допомогою файлів ресурсів і ResourceManager. Файли ресурсів додаються до маніфесту програми, а ResourceManager вибирає потрібний файл на основі додаткової інформації, наприклад, MobileResources.en, де en означає локалізацію.
+
+1.4	Загальна інформація
+
+Всі сервіси реалізують абстракції, що забезпечує дотримання принципу SOLID Dependency Inversion і сприяє реалізації Dependency Injection. Це спрощує створення сторінок та їх додавання без необхідності змінювати існуючу розмітку основного застосунку.
+ 
+2   ДІАГРАМА КОМПОНЕНТІВ
+
+У цьому розділі буде представлено діаграму компонентів для mobile частини системи. Вона показує основні компоненти та їх взаємодію (рис. 1).
+
+3   ДІАГРАМА ПРЕЦЕДЕНТІВ
+
+Для детального опису функціональності системи та взаємодії користувачів з системою було створено UML діаграму прецедентів. Ця діаграма надає візуальне уявлення про те, як користувачі можуть взаємодіяти з різними компонентами системи (див. рис. 2).
+ 
+4   ДІАГРАМА ПАКЕТІВ
+Була створена діаграма пакетів mobile частини проєкту (рис. 3).
+Ця частина проєкту складається з таких пакетів як Mobile (основна функціональність) та Mobile.ApiService.
+ 
+5   ДІАГРАМА СТАНІВ
+
+Була стоврена діаграма станів (рис. 3), для відображення станів, в яких може бути застосунок.
+	
+Висновки:
+У ході виконання лабораторної роботи були отримані навички з проєктування IoT частини програмної системи. Результатом роботи є розроблена програмна реалізація IoT програмної частини, що включає збір даних про мікроклімат, обробку цих даних та автоматизацію догляду за рослинами.
+Було розроблено та проаналізовано архітектуру системи, що дозволяє легко масштабувати та оновлювати систему. Це забезпечує високу продуктивність та надійність роботи всієї системи.
+Отримані результати демонструють можливість створення розумної системи для моніторингу та управління мікрокліматом для домашніх рослин, що може бути корисним для багатьох користувачів, які бажають покращити умови вирощування рослин та автоматизувати процес догляду за ними. 
+
+ПЕРЕЛІК ДЖЕРЕЛ ПОСИЛАННЯ
+1.	Посилання на відео захисту. URL: https://youtu.be/tvvzK0as6d4
+2.	Посилання на папку з джерельним кодом проєкта. URL: https://github.com/NureHorbatenkoDmytro/apz-pzpi-21-5-horbatenko-dmytro/tree/main/Task5
+ 
+ДОДАТОК А
+PlantsPage.xaml
+1	<ContentPage x:Class="FloraSense.Pages.PlantsPage"
+2	             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+3	             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+4	             xmlns:additionalModels="clr-namespace:FloraSense.Entities.PlantDataItems;assembly=FloraSense.Entities"
+5	             xmlns:models="clr-namespace:FloraSense.Entities.Plants;assembly=FloraSense.Entities"
+6	             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+7	             xmlns:viewModels="clr-namespace:FloraSense.ViewModels.PageViewModels"
+8	             Title="PlantPage"
+9	             x:DataType="viewModels:PlantViewModel">
+10	
+11	    <ContentPage.Behaviors>
+12	        <toolkit:EventToCommandBehavior Command="{Binding Loaded}"
+13	                                        EventName="Appearing" />
+14	    </ContentPage.Behaviors>
+15	
+16	    <StackLayout>
+17	        <StackLayout IsVisible="{Binding IsCurrentEntitySet}">
+18	            <Label FontAttributes="Bold"
+19	                   FontSize="Large"
+20	                   Text="Plant Details" />
+21	
+22	            <StackLayout>
+23	                <Label Text="Name:" />
+24	                <Entry Text="{Binding CurrentEntity.Name}" />
+25	            </StackLayout>
+26	
+27	            <StackLayout>
+28	                <Label Text="Plant Type ID:" />
+29	                <Picker ItemsSource="{Binding PlantTypeModels}"
+30	                        SelectedItem="{Binding CurrentEntity.PlantTypeId}" />
+31	            </StackLayout>
+32	
+33	            <StackLayout>
+34	                <Label Text="User ID:" />
+35	                <Entry Text="{Binding CurrentEntity.UserId}" />
+36	            </StackLayout>
+37	
+38	            <StackLayout>
+39	                <Label Text="Planting Date:" />
+40	                <DatePicker Date="{Binding CurrentEntity.PlantingDate}" />
+41	            </StackLayout>
+42	
+43	            <StackLayout>
+44	                <Label Text="Current Status:" />
+45	                <Entry Text="{Binding CurrentEntity.CurrentStatus}" />
+46	            </StackLayout>
+47	
+48	            <StackLayout>
+49	                <Label Text="Soil Type:" />
+50	                <Entry Text="{Binding CurrentEntity.SoilType}" />
+51	            </StackLayout>
+52	
+53	            <Button Command="{Binding Update}"
+54	                    Text="Update" />
+55	            <Button Command="{Binding BackToList}"
+56	                    Text="Back to list" />
+57	
+58	            <Label FontAttributes="Bold"
+59	                   FontSize="Large"
+60	                   Text="Plant Data" />
+61	
+62	            <ScrollView HeightRequest="200">
+63	                <CollectionView ItemsSource="{Binding PlantDataItems}"
+64	                                SelectionMode="None">
+65	                    <CollectionView.ItemTemplate>
+66	                        <DataTemplate x:DataType="additionalModels:PlantDataModel">
+67	                            <TableView Margin="0,10,0,10"
+68	                                       HeightRequest="300"
+69	                                       WidthRequest="300">
+70	                                <TableRoot>
+71	                                    <TableSection>
+72	                                        <TextCell Detail="{Binding Humidity}"
+73	                                                  Text="Humidity" />
+74	                                        <TextCell Detail="{Binding Temperature}"
+75	                                                  Text="Temperature" />
+76	                                        <TextCell Detail="{Binding Light}"
+77	                                                  Text="Light" />
+78	                                        <TextCell Detail="{Binding NutrientLevel}"
+79	                                                  Text="Nutrient Level" />
+80	                                        <TextCell Detail="{Binding Timestamp}"
+81	                                                  Text="Timestamp" />
+82	                                    </TableSection>
+83	                                </TableRoot>
+84	                            </TableView>
+85	                        </DataTemplate>
+86	                    </CollectionView.ItemTemplate>
+87	                </CollectionView>
+88	            </ScrollView>
+89	        </StackLayout>
+90	
+91	        <StackLayout IsVisible="{Binding IsCreating}">
+92	            <Label FontAttributes="Bold"
+93	                   FontSize="Large"
+94	                   Text="Plant Details" />
+95	
+96	            <StackLayout>
+97	                <Label Text="Name:" />
+98	                <Entry Text="{Binding NewEntity.Name}" />
+99	            </StackLayout>
+100	
+101	            <StackLayout>
+102	                <Label Text="Plant Type ID:" />
+103	                <Picker ItemsSource="{Binding PlantTypeModels}"
+104	                        SelectedItem="{Binding NewEntity.PlantTypeId}" />
+105	            </StackLayout>
+106	
+107	            <StackLayout>
+108	                <Label Text="Planting Date:" />
+109	                <DatePicker Date="{Binding NewEntity.PlantingDateInDate}" />
+110	            </StackLayout>
+111	
+112	            <StackLayout>
+113	                <Label Text="Current Status:" />
+114	                <Entry Text="{Binding NewEntity.CurrentStatus}" />
+115	            </StackLayout>
+116	
+117	            <StackLayout>
+118	                <Label Text="Soil Type:" />
+119	                <Entry Text="{Binding NewEntity.SoilType}" />
+120	            </StackLayout>
+121	
+122	            <Button Command="{Binding Create}"
+123	                    Text="Create" />
+124	            <Button Command="{Binding BackToList}"
+125	                    Text="Back to list" />
+126	        </StackLayout>
+127	
+128	        <StackLayout IsVisible="{Binding IsCurrentEntityNotSet}">
+129	            <Label>Plants:</Label>
+130	            <ListView ItemsSource="{Binding Entities}"
+131	                      SelectionMode="Single">
+132	                <ListView.Behaviors>
+133	                    <toolkit:EventToCommandBehavior Command="{Binding GetEntity}"
+134	                                                    x:TypeArguments="SelectedItemChangedEventArgs"
+135	                                                    EventName="ItemSelected" />
+136	                </ListView.Behaviors>
+137	                <ListView.ItemTemplate>
+138	                    <DataTemplate x:DataType="models:PlantModel">
+139	                        <ViewCell>
+140	                            <StackLayout>
+141	                                <Label Text="Name:" />
+142	                                <Label Text="{Binding Name}" />
+143	                            </StackLayout>
+144	                        </ViewCell>
+145	                    </DataTemplate>
+146	                </ListView.ItemTemplate>
+147	            </ListView>
+148	            <Button Command="{Binding ToCreate}"
+149	                    Text="Create" />
+150	        </StackLayout>
+151	    </StackLayout>
+152	</ContentPage>
+
+ 
+ДОДАТОК Б
+PlantViewModel.cs
+1	using AutoMapper;
+2	using CommunityToolkit.Mvvm.ComponentModel;
+3	using FloraSense.ApiLayer.EntityApiServices;
+4	using FloraSense.Entities.PlantDataItems;
+5	using FloraSense.Entities.Plants;
+6	using FloraSense.Entities.PlantTypes;
+7	using FloraService.ApiLayer.Abstractions;
+8	using System.Collections.ObjectModel;
+9	
+10	namespace FloraSense.ViewModels.PageViewModels
+11	{
+12	    public partial class PlantViewModel : EntityBaseViewModel<PlantModel, PlantModelId, CreatePlantModel, UpdatePlantModel>
+13	    {
+14	        private readonly IEntityApiService<PlantTypeModel, PlantTypeModelId, CreatePlantTypeModel, UpdatePlantTypeModel> _plantTypeApiService;
+15	        private readonly PlantDataApiService _plantDataApiService;
+16	        [ObservableProperty]
+17	        private ObservableCollection<Guid> _plantTypeModels = new ObservableCollection<Guid>();
+18	        [ObservableProperty]
+19	        private ObservableCollection<PlantDataModel> _plantDataItems = new ObservableCollection<PlantDataModel>();
+20	        [ObservableProperty]
+21	        private int _currentPlantTypeModelIndex;
+22	
+23	        public PlantViewModel(
+24	            IEntityApiService<PlantTypeModel, PlantTypeModelId, CreatePlantTypeModel, UpdatePlantTypeModel> plantTypeApiService,
+25	            PlantDataApiService plantDataApiService,
+26	            IEntityApiService<PlantModel, PlantModelId, CreatePlantModel, UpdatePlantModel> apiService, IMapper mapper) : base(apiService, mapper)
+27	        {
+28	            _plantTypeApiService = plantTypeApiService;
+29	            _plantDataApiService = plantDataApiService;
+30	        }
+31	
+32	        protected override async Task LoadAsync()
+33	        {
+34	            PlantTypeModels = new ObservableCollection<Guid>((await _plantTypeApiService.GetAllAsync()).Select(at => at.Id));
+35	
+36	            await base.LoadAsync();
+37	        }
+38	
+39	        protected override async Task GetCurrentEntityAsync(SelectedItemChangedEventArgs? args)
+40	        {
+41	            await base.GetCurrentEntityAsync(args);
+42	
+43	            if (CurrentEntity is null)
+44	            {
+45	                return;
+46	            }
+47	
+48	            PlantDataItems = new ObservableCollection<PlantDataModel>(await _plantDataApiService.GetAllPlantsAsync(CurrentEntity.Id));
+49	            CurrentPlantTypeModelIndex = PlantTypeModels.IndexOf(CurrentEntity.PlantTypeId);
+50	        }
+51	    }
+52	}
+
+ 
+ДОДАТОК В
+AppShell.xaml.cs
+1	using FloraSense.Entities.Guards;
+2	using FloraSense.ViewModels.AppViewModels;
+3	using FloraService.Abstractions.Pages;
+4	
+5	namespace FloraSense
+6	{
+7	    public partial class AppShell : Shell
+8	    {
+9	        public AppShell(IEnumerable<IEntityWithGuards> pages, AppShellViewModel viewModel)
+10	        {
+11	            InitializeComponent();
+12	
+13	            BindingContext = viewModel;
+14	
+15	            Items.Clear();
+16	
+17	            foreach (var page in pages)
+18	            {
+19	                HandleGuards(page);
+20	            }
+21	        }
+22	
+23	        private void HandleGuards(IEntityWithGuards page)
+24	        {
+25	            var pageAsContentPage = page as ContentPage;
+26	            if (pageAsContentPage is null)
+27	            {
+28	                return;
+29	            }
+30	
+31	            var flyoutItem = new FlyoutItem();
+32	
+33	            flyoutItem.Items.Add(pageAsContentPage);
+34	            flyoutItem.Title = pageAsContentPage.Title;
+35	
+36	            if (page.Guards.Contains(Guard.LoginRequired))
+37	            {
+38	                flyoutItem.SetBinding(FlyoutItem.IsVisibleProperty, nameof(AppShellViewModel.IsLoggedIn));
+39	            }
+40	            if (page.Guards.Contains(Guard.OnlyIfLogout))
+41	            {
+42	                flyoutItem.SetBinding(FlyoutItem.IsVisibleProperty, nameof(AppShellViewModel.IsLoggedOut));
+43	            }
+44	
+45	            Items.Add(flyoutItem);
+46	        }
+47	    }
+48	}
+

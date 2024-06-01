@@ -1,0 +1,47 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "FloraSense.ApiLayer.Entities/1.0.0": {
+        "dependencies": {
+          "FloraSense.ApiLayer.Entities.Abstractions": "1.0.0",
+          "FloraSense.Entities": "1.0.0"
+        },
+        "runtime": {
+          "FloraSense.ApiLayer.Entities.dll": {}
+        }
+      },
+      "FloraSense.ApiLayer.Entities.Abstractions/1.0.0": {
+        "runtime": {
+          "FloraSense.ApiLayer.Entities.Abstractions.dll": {}
+        }
+      },
+      "FloraSense.Entities/1.0.0": {
+        "runtime": {
+          "FloraSense.Entities.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "FloraSense.ApiLayer.Entities/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "FloraSense.ApiLayer.Entities.Abstractions/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "FloraSense.Entities/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

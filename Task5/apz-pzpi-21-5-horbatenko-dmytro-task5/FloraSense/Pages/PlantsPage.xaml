@@ -1,0 +1,152 @@
+<ContentPage x:Class="FloraSense.Pages.PlantsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:additionalModels="clr-namespace:FloraSense.Entities.PlantDataItems;assembly=FloraSense.Entities"
+             xmlns:models="clr-namespace:FloraSense.Entities.Plants;assembly=FloraSense.Entities"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewModels="clr-namespace:FloraSense.ViewModels.PageViewModels"
+             Title="PlantPage"
+             x:DataType="viewModels:PlantViewModel">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior Command="{Binding Loaded}"
+                                        EventName="Appearing" />
+    </ContentPage.Behaviors>
+
+    <StackLayout>
+        <StackLayout IsVisible="{Binding IsCurrentEntitySet}">
+            <Label FontAttributes="Bold"
+                   FontSize="Large"
+                   Text="Plant Details" />
+
+            <StackLayout>
+                <Label Text="Name:" />
+                <Entry Text="{Binding CurrentEntity.Name}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Plant Type ID:" />
+                <Picker ItemsSource="{Binding PlantTypeModels}"
+                        SelectedItem="{Binding CurrentEntity.PlantTypeId}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="User ID:" />
+                <Entry Text="{Binding CurrentEntity.UserId}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Planting Date:" />
+                <DatePicker Date="{Binding CurrentEntity.PlantingDate}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Current Status:" />
+                <Entry Text="{Binding CurrentEntity.CurrentStatus}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Soil Type:" />
+                <Entry Text="{Binding CurrentEntity.SoilType}" />
+            </StackLayout>
+
+            <Button Command="{Binding Update}"
+                    Text="Update" />
+            <Button Command="{Binding BackToList}"
+                    Text="Back to list" />
+
+            <Label FontAttributes="Bold"
+                   FontSize="Large"
+                   Text="Plant Data" />
+
+            <ScrollView HeightRequest="200">
+                <CollectionView ItemsSource="{Binding PlantDataItems}"
+                                SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="additionalModels:PlantDataModel">
+                            <TableView Margin="0,10,0,10"
+                                       HeightRequest="300"
+                                       WidthRequest="300">
+                                <TableRoot>
+                                    <TableSection>
+                                        <TextCell Detail="{Binding Humidity}"
+                                                  Text="Humidity" />
+                                        <TextCell Detail="{Binding Temperature}"
+                                                  Text="Temperature" />
+                                        <TextCell Detail="{Binding Light}"
+                                                  Text="Light" />
+                                        <TextCell Detail="{Binding NutrientLevel}"
+                                                  Text="Nutrient Level" />
+                                        <TextCell Detail="{Binding Timestamp}"
+                                                  Text="Timestamp" />
+                                    </TableSection>
+                                </TableRoot>
+                            </TableView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+        </StackLayout>
+
+        <StackLayout IsVisible="{Binding IsCreating}">
+            <Label FontAttributes="Bold"
+                   FontSize="Large"
+                   Text="Plant Details" />
+
+            <StackLayout>
+                <Label Text="Name:" />
+                <Entry Text="{Binding NewEntity.Name}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Plant Type ID:" />
+                <Picker ItemsSource="{Binding PlantTypeModels}"
+                        SelectedItem="{Binding NewEntity.PlantTypeId}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Planting Date:" />
+                <DatePicker Date="{Binding NewEntity.PlantingDateInDate}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Current Status:" />
+                <Entry Text="{Binding NewEntity.CurrentStatus}" />
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Soil Type:" />
+                <Entry Text="{Binding NewEntity.SoilType}" />
+            </StackLayout>
+
+            <Button Command="{Binding Create}"
+                    Text="Create" />
+            <Button Command="{Binding BackToList}"
+                    Text="Back to list" />
+        </StackLayout>
+
+        <StackLayout IsVisible="{Binding IsCurrentEntityNotSet}">
+            <Label>Plants:</Label>
+            <ListView ItemsSource="{Binding Entities}"
+                      SelectionMode="Single">
+                <ListView.Behaviors>
+                    <toolkit:EventToCommandBehavior Command="{Binding GetEntity}"
+                                                    x:TypeArguments="SelectedItemChangedEventArgs"
+                                                    EventName="ItemSelected" />
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:PlantModel">
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="Name:" />
+                                <Label Text="{Binding Name}" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Command="{Binding ToCreate}"
+                    Text="Create" />
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

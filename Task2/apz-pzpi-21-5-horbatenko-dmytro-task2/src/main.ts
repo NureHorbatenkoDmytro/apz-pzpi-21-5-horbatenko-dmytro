@@ -13,7 +13,10 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3000;
 
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  });
   app.use(cookieParser());
   app.useGlobalInterceptors();
   app.useGlobalPipes(
@@ -29,8 +32,8 @@ async function bootstrap() {
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   const config = new DocumentBuilder()
-    .setTitle('Insanity Bets API')
-    .setDescription('Insanity Bets API description')
+    .setTitle('FloraSense API')
+    .setDescription('FloraSense API description')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

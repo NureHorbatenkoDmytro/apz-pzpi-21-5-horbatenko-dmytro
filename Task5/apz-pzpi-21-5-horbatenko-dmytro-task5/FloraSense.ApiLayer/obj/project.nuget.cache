@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "UWUuop0YoHqmB7fLy5D7SezY0V/UmF8s9a8yJq74Et5ikYxpCqMgpmj6tllr0GdaUrO6DQd7GpiZnbF4Jd5+Ng==",
+  "success": true,
+  "projectFilePath": "D:\\personal\\FloraSense\\FloraSense.ApiLayer\\FloraSense.ApiLayer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\uyuyuy\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\8.0.0\\microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\uyuyuy\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\uyuyuy\\.nuget\\packages\\microsoft.extensions.options\\8.0.0\\microsoft.extensions.options.8.0.0.nupkg.sha512",
+    "C:\\Users\\uyuyuy\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
